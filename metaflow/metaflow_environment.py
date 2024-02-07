@@ -91,7 +91,7 @@ class MetaflowEnvironment(object):
         if datastore_type == "s3":
             return (
                 '%s -m awscli ${METAFLOW_S3_ENDPOINT_URL:+--endpoint-url=\\"${METAFLOW_S3_ENDPOINT_URL}\\"} '
-                + "s3 cp %s job.tar >/dev/null"
+                + "s3 cp %s job.tar"
             ) % (self._python(), code_package_url)
         elif datastore_type == "azure":
             from .plugins.azure.azure_utils import parse_azure_full_path
@@ -119,9 +119,9 @@ class MetaflowEnvironment(object):
             )
 
     def _get_install_dependencies_cmd(self, datastore_type):
-        cmds = ["%s -m pip install requests -qqq" % self._python()]
+        cmds = ["%s -m pip install requests" % self._python()]
         if datastore_type == "s3":
-            cmds.append("%s -m pip install awscli boto3 -qqq" % self._python())
+            cmds.append("%s -m pip install awscli boto3" % self._python())
         elif datastore_type == "azure":
             cmds.append(
                 "%s -m pip install azure-identity azure-storage-blob simple-azure-blob-downloader -qqq"
